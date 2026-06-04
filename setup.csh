@@ -30,3 +30,6 @@ sudo apt install -y /tmp/vscode.deb
 
 echo "=== Environment Setup Complete! ==="
 echo "Note: Please run 'source ~/.cargo/env' and 'source ~/.local/bin/env' in any open terminals."
+
+# So vscode works
+echo "alias code='code --user-data-dir=~/.config/vscode --no-sandbox'" >> ~/.bashrc
