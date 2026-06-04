@@ -21,9 +21,12 @@ if [ ! -d "$ZSH_CUSTOM_DIR/zsh-syntax-highlighting" ]; then
     git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM_DIR/zsh-syntax-highlighting"
 fi
 
-# Install 'uv' (Python package manager)
+# Install 'uv'
 echo "Installing uv..."
 curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install 'ty'
+curl -LsSf https://astral.sh/ty/install.sh | sh
 
 # Install Rust via rustup
 echo "Installing Rust..."
@@ -55,7 +58,18 @@ zstyle ':completion:*' menu select
 # VS Code root bypass alias
 alias code='code --user-data-dir=~/.config/vscode --no-sandbox'
 
+# Install typst
+cargo install --locked typst-cli
+
+
+
+# Install ty
+
+
 echo "Welcome to your customized Zsh RAM environment!"
 EOF
 
+
+
 echo "=== Environment Setup Complete! ==="
+
