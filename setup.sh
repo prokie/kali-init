@@ -5,7 +5,7 @@ echo "=== Starting Kali Live RAM Initialization (Zsh Edition) ==="
 
 # Update package lists & ensure Zsh is installed
 sudo apt update -y && sudo apt install --only-upgrade nmap
-sudo apt install -y curl git wget build-essential zsh
+sudo apt install -y curl git wget build-essential zsh pkg-config
 
 # Create the Zsh plugin directory if it doesn't exist
 ZSH_CUSTOM_DIR="$HOME/.zsh_plugins"
@@ -64,6 +64,9 @@ cargo install --locked typst-cli
 
 
 # Install ty
+
+# Set timezone to Stockholm
+sudo timedatectl set-timezone Europe/Stockholm
 
 
 echo "Welcome to your customized Zsh RAM environment!"
