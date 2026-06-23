@@ -44,9 +44,9 @@ cargo install eza --locked
 # Configure RustScan
 echo "Creating RustScan configuration file..."
 cat << 'EOF' > "$HOME/.rustscan.toml"
-ulimit = 5000
+ulimit = 1000
 command = ["-sV", "-sC"]
-batch_size = 4500
+batch_size = 750
 EOF
 
 # Install rapid web fuzzing tools via Go
