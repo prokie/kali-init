@@ -38,10 +38,6 @@ echo "Installing Visual Studio Code..."
 wget -qO /tmp/vscode.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
 sudo apt install -y /tmp/vscode.deb
 
-# Install typst
-echo "Installing Typst..."
-source "$HOME/.cargo/env"
-cargo install --locked typst-cli
 
 # Set timezone to Stockholm
 echo "Configuring System Timezone..."
