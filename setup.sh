@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-echo "=== Starting Kali Live RAM Initialization (Zsh Edition) ==="
+echo "=== Starting Kali Initialization (Zsh Edition) ==="
 
 # Update package lists & ensure Zsh is installed
 sudo apt update -y && sudo apt install --only-upgrade nmap
@@ -42,7 +42,7 @@ sudo apt install -y /tmp/vscode.deb
 # Set timezone to Stockholm
 echo "Configuring System Timezone..."
 sudo timedatectl set-timezone Europe/Stockholm
-setxkbmap se
+
 
 # Generate a clean .zshrc file for the session
 echo "Configuring .zshrc..."
@@ -65,7 +65,16 @@ zstyle ':completion:*' menu select
 # VS Code root bypass alias
 alias code='code --user-data-dir=~/.config/vscode --no-sandbox'
 
-echo "Welcome to your customized Zsh RAM environment!"
+echo "Welcome to your customized Zsh environment!"
+
+setxkbmap se
+
+HISTFILE=~/.zsh_history
+HISTSIZE=5000
+SAVEHIST=5000
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+
 EOF
 
 echo "=== Environment Setup Complete! ==="
