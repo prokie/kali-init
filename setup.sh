@@ -41,6 +41,14 @@ cargo install bat --locked
 cargo install feroxbuster --locked
 cargo install eza --locked
 
+# Configure RustScan
+echo "Creating RustScan configuration file..."
+cat << 'EOF' > "$HOME/.rustscan.toml"
+ulimit = 5000
+command = ["-sV", "-sC"]
+batch_size = 4500
+EOF
+
 # Install rapid web fuzzing tools via Go
 echo "Installing Go-based pentesting tools (ffuf)..."
 go install github.com/ffuf/ffuf/v2@latest
