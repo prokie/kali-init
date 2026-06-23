@@ -4,7 +4,7 @@ set -e
 echo "=== Starting Kali Initialization (Zsh Edition) ==="
 
 # Update package lists & ensure Zsh is installed
-sudo apt update -y && sudo apt install --only-upgrade nmap
+sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt install --only-upgrade nmap
 sudo apt install -y curl git wget build-essential zsh pkg-config
 
 # Create the Zsh plugin directory if it doesn't exist
