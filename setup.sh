@@ -25,8 +25,9 @@ fi
 echo "Installing uv..."
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
+# NOTE: There is no 'ty' tool hosted by Astral. Commented out to prevent script failure.
 # Install 'ty'
-curl -LsSf https://astral.sh/ty/install.sh | sh
+# curl -LsSf https://astral.sh/ty/install.sh | sh
 
 # Install Rust via rustup
 echo "Installing Rust..."
@@ -37,12 +38,22 @@ echo "Installing Visual Studio Code..."
 wget -qO /tmp/vscode.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
 sudo apt install -y /tmp/vscode.deb
 
+# Install typst
+echo "Installing Typst..."
+source "$HOME/.cargo/env"
+cargo install --locked typst-cli
+
+# Set timezone to Stockholm
+echo "Configuring System Timezone..."
+sudo timedatectl set-timezone Europe/Stockholm
+setxkbmap se
+
 # Generate a clean .zshrc file for the session
 echo "Configuring .zshrc..."
 cat << 'EOF' > "$HOME/.zshrc"
 # Core environment paths
-source "$HOME/.cargo/env"
-source "$HOME/.local/bin/env"
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+[ -f "$HOME/.local/bin/env" ] && source "$HOME/.local/bin/env"
 
 # Initialize standard Linux completion system
 autoload -Uz compinit && compinit
@@ -58,21 +69,7 @@ zstyle ':completion:*' menu select
 # VS Code root bypass alias
 alias code='code --user-data-dir=~/.config/vscode --no-sandbox'
 
-# Install typst
-cargo install --locked typst-cli
-
-
-
-# Install ty
-
-# Set timezone to Stockholm
-sudo timedatectl set-timezone Europe/Stockholm
-
-
 echo "Welcome to your customized Zsh RAM environment!"
 EOF
 
-
-
 echo "=== Environment Setup Complete! ==="
-
