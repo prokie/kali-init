@@ -4,7 +4,7 @@ set -e
 echo "=== Starting Kali Initialization (Zsh Edition) ==="
 
 # Update package lists & ensure Zsh is installed
-sudo apt update -y && sudo apt upgrade -y && sudo apt autoremove -y && sudo apt install --only-upgrade nmap
+sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
 sudo apt install -y curl git wget build-essential zsh pkg-config
 
 # Create the Zsh plugin directory if it doesn't exist
@@ -32,6 +32,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 # Install Rust via rustup
 echo "Installing Rust..."
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
 
 # Install VS Code
 echo "Installing Visual Studio Code..."
@@ -44,12 +46,22 @@ echo "Configuring System Timezone..."
 sudo timedatectl set-timezone Europe/Stockholm
 
 
-# Generate a clean .zshrc file for the session
+# Generate a clean .zshrc file
 echo "Configuring .zshrc..."
 cat << 'EOF' > "$HOME/.zshrc"
 # Core environment paths
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 [ -f "$HOME/.local/bin/env" ] && source "$HOME/.local/bin/env"
+
+# History configuration
+HISTFILE=~/.zsh_history
+HISTSIZE=5000
+SAVEHIST=5000
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+
+# Fix keyboard layout on startup
+setxkbmap se
 
 # Initialize standard Linux completion system
 autoload -Uz compinit && compinit
@@ -62,19 +74,14 @@ source "$HOME/.zsh_plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' menu select
 
-# VS Code root bypass alias
-alias code='code --user-data-dir=~/.config/vscode --no-sandbox'
+# Custom Command Prompt
+PROMPT='%n%F{green}%#%f %F{cyan}%~%f '
+
+# Bind Ctrl+Left and Ctrl+Right arrows to skip words
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;5C" forward-word
 
 echo "Welcome to your customized Zsh environment!"
-
-setxkbmap se
-
-HISTFILE=~/.zsh_history
-HISTSIZE=5000
-SAVEHIST=5000
-setopt APPEND_HISTORY
-setopt SHARE_HISTORY
-
 EOF
 
 echo "=== Environment Setup Complete! ==="
