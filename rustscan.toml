@@ -1,0 +1,3 @@
+ulimit = 1000
+command = ["-sV", "-sC"]
+batch_size = 750

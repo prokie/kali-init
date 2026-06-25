@@ -1,25 +1,31 @@
 #!/usr/bin/env bash
 set -e
 
-echo "=== Starting Kali Initialization (Zsh Edition) ==="
+echo "=== Starting Linux Initialization ==="
 
 # Update package lists & ensure required dependencies are installed
 sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
 # Added ripgrep, fzf, and golang-go to the base system install
 sudo apt install -y curl git wget build-essential zsh pkg-config libssl-dev ripgrep fzf golang-go
 
-# Create the Zsh plugin directory if it doesn't exist
-ZSH_CUSTOM_DIR="$HOME/.zsh_plugins"
-mkdir -p "$ZSH_CUSTOM_DIR"
+# Install Oh My Zsh 
+echo "Installing Oh My Zsh..."
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+fi
+
+# Set up Oh My Zsh custom plugins directory
+ZSH_CUSTOM="$HOME/.oh-my-zsh/custom"
+mkdir -p "$ZSH_CUSTOM/plugins"
 
 # Clone the Autocomplete and Syntax Highlighting plugins
 echo "Installing Zsh plugins..."
-if [ ! -d "$ZSH_CUSTOM_DIR/zsh-autosuggestions" ]; then
-    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM_DIR/zsh-autosuggestions"
+if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+    git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 fi
 
-if [ ! -d "$ZSH_CUSTOM_DIR/zsh-syntax-highlighting" ]; then
-    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM_DIR/zsh-syntax-highlighting"
+if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 fi
 
 # Install 'uv'
@@ -42,12 +48,13 @@ cargo install feroxbuster --locked
 cargo install eza --locked
 
 # Configure RustScan
-echo "Creating RustScan configuration file..."
-cat << 'EOF' > "$HOME/.rustscan.toml"
-ulimit = 1000
-command = ["-sV", "-sC"]
-batch_size = 750
-EOF
+echo "Configuring RustScan..."
+if [ -f "rustscan.toml" ]; then
+    cp rustscan.toml "$HOME/.rustscan.toml"
+    echo "Copied rustscan.toml from current directory."
+else
+    echo "Warning: rustscan.toml not found in the current directory. Skipping."
+fi
 
 # Install rapid web fuzzing tools via Go
 echo "Installing Go-based pentesting tools (ffuf)..."
@@ -69,52 +76,16 @@ git config --global user.email "36114799+prokie@users.noreply.github.com"
 
 # Generate a clean .zshrc file
 echo "Configuring .zshrc..."
-cat << 'EOF' > "$HOME/.zshrc"
-# Core environment paths
-[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-[ -f "$HOME/.local/bin/env" ] && source "$HOME/.local/bin/env"
-# Ensure Go binaries are in the path execution line
-[ -d "$HOME/go/bin" ] && export PATH="$PATH:$HOME/go/bin"
+if [ -f ".zshrc" ]; then
+    # Oh My Zsh creates a default .zshrc upon install, so we overwrite it
+    cp .zshrc "$HOME/.zshrc"
+    echo "Copied .zshrc from current directory."
+else
+    echo "Warning: .zshrc not found in the current directory. The default Oh My Zsh configuration will be retained."
+fi
 
-# History configuration
-HISTFILE=~/.zsh_history
-HISTSIZE=5000
-SAVEHIST=5000
-setopt APPEND_HISTORY
-setopt SHARE_HISTORY
+# Ensure Zsh is the default shell (unattended mode skips this step)
+echo "Setting Zsh as default shell..."
+sudo chsh -s $(which zsh) $(whoami)
 
-# Fix keyboard layout on startup
-setxkbmap se
-
-# Initialize standard Linux completion system
-autoload -Uz compinit && compinit
-
-# Set up fzf shell integration
-[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
-
-# Useful Aliases
-alias ls='eza --icons --git'
-alias ll='eza -l --icons --git'
-alias la='eza -la --icons --git'
-alias grep='rg'
-
-# Load the custom plugins we cloned
-source "$HOME/.zsh_plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-source "$HOME/.zsh_plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-
-# Customize autocomplete behavior (case-insensitive, tab menu navigation)
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' menu select
-
-# Custom Command Prompt
-PROMPT='%n%F{green}%#%f %F{cyan}%~%f '
-
-# Bind Ctrl+Left and Ctrl+Right arrows to skip words
-bindkey "^[[1;5D" backward-word
-bindkey "^[[1;5C" forward-word
-
-echo "Welcome to your customized Zsh environment!"
-EOF
-
-echo "=== Environment Setup Complete! ==="
+echo "=== Environment Setup Complete! Please log out and back in, or restart your terminal. ==="
