@@ -28,7 +28,9 @@ setopt APPEND_HISTORY
 setopt SHARE_HISTORY
 
 # Fix keyboard layout on startup
-setxkbmap se
+if [[ "$XDG_SESSION_TYPE" != "wayland" ]]; then
+    setxkbmap se 2>/dev/null
+fi
 
 # Set up fzf shell integration
 [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
