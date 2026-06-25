@@ -50,8 +50,8 @@ cargo install eza --locked
 # Configure RustScan
 echo "Configuring RustScan..."
 if [ -f "rustscan.toml" ]; then
-    cp rustscan.toml "$HOME/.rustscan.toml"
-    echo "Copied rustscan.toml from current directory."
+    ln -sf "$(pwd)/rustscan.toml" "$HOME/.rustscan.toml"
+    echo "Symlinked rustscan.toml to ~/.rustscan.toml"
 else
     echo "Warning: rustscan.toml not found in the current directory. Skipping."
 fi
@@ -77,15 +77,14 @@ git config --global user.email "36114799+prokie@users.noreply.github.com"
 # Generate a clean .zshrc file
 echo "Configuring .zshrc..."
 if [ -f ".zshrc" ]; then
-    # Oh My Zsh creates a default .zshrc upon install, so we overwrite it
-    cp .zshrc "$HOME/.zshrc"
-    echo "Copied .zshrc from current directory."
+    ln -sf "$(pwd)/.zshrc" "$HOME/.zshrc"
+    echo "Symlinked .zshrc to ~/.zshrc"
 else
     echo "Warning: .zshrc not found in the current directory. The default Oh My Zsh configuration will be retained."
 fi
 
-# Ensure Zsh is the default shell (unattended mode skips this step)
+# Ensure Zsh is the default shell 
 echo "Setting Zsh as default shell..."
 sudo chsh -s $(which zsh) $(whoami)
 
-echo "=== Environment Setup Complete! Please log out and back in, or restart your terminal. ==="
+echo "=== Environment Setup Complete! ==="
