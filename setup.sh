@@ -6,7 +6,7 @@ echo "=== Starting Linux Initialization ==="
 # Update package lists & ensure required dependencies are installed
 sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
 # Added ripgrep, fzf, and golang-go to the base system install
-sudo apt install -y curl git wget build-essential zsh pkg-config libssl-dev ripgrep fzf golang-go
+sudo apt install -y curl git wget build-essential zsh pkg-config libssl-dev ripgrep fzf golang-go nmap
 
 # Install Oh My Zsh 
 echo "Installing Oh My Zsh..."
@@ -40,12 +40,19 @@ echo "Installing Rust..."
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 
+rustup update
+rustup component add clippy rust-analyzer
+
+
 # Install modern security and CLI tools via Cargo
 echo "Compiling Rust tools (rustscan, bat, feroxbuster, eza)..."
 cargo install rustscan --locked
 cargo install bat --locked
 cargo install feroxbuster --locked
 cargo install eza --locked
+cargo install fd-find --locked
+cargo install zoxide --locked
+cargo install tealdeer --locked
 
 # Configure RustScan
 echo "Configuring RustScan..."

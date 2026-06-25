@@ -51,4 +51,6 @@ zstyle ':completion:*' menu select
 bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word
 
+eval "$(zoxide init zsh)"
+
 echo "Welcome to your customized Oh My Zsh environment!"
