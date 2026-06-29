@@ -8,6 +8,16 @@ sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
 # Added ripgrep, fzf, and golang-go to the base system install
 sudo apt install -y curl git wget build-essential zsh pkg-config libssl-dev ripgrep fzf golang-go nmap
 
+
+if [ ! -d "/usr/share/seclists" ]; then
+    sudo mkdir -p /usr/share/seclists
+    sudo chown "$USER:$USER" /usr/share/seclists
+    git clone --depth 1 https://github.com/danielmiessler/SecLists.git /usr/share/seclists
+else
+    echo "SecLists already installed at /usr/share/seclists"
+fi
+
+
 # Install Oh My Zsh 
 echo "Installing Oh My Zsh..."
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
