@@ -22,10 +22,16 @@ source $ZSH/oh-my-zsh.sh
 
 # History configuration (OMZ sets defaults, but keeping your explicit sizes)
 HISTFILE=~/.zsh_history
-HISTSIZE=5000
-SAVEHIST=5000
+HISTSIZE=50000
+SAVEHIST=50000
+
+# Standard OMZ options (explicitly set for safety)
 setopt APPEND_HISTORY
 setopt SHARE_HISTORY
+
+# Added to prevent corruption
+setopt INC_APPEND_HISTORY  # Writes to history immediately, not at shell exit
+setopt HIST_FCNTL_LOCK     # Uses robust OS-level file locking to stop race conditions
 
 # Fix keyboard layout on startup
 if [[ "$XDG_SESSION_TYPE" != "wayland" ]]; then
