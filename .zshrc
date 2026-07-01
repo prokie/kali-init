@@ -25,14 +25,11 @@ HISTFILE=~/.zsh_history
 HISTSIZE=50000
 SAVEHIST=50000
 
-# Standard OMZ options (explicitly set for safety)
-setopt APPEND_HISTORY
-setopt SHARE_HISTORY
-
 # Added to prevent corruption
 setopt INC_APPEND_HISTORY  # Writes to history immediately, not at shell exit
 setopt HIST_FCNTL_LOCK     # Uses robust OS-level file locking to stop race conditions
-
+setopt HIST_IGNORE_DUPS    # Don't record a command if it was the exact duplicate of the previous one
+setopt HIST_IGNORE_SPACE   # Don't record commands that start with a space (great for passwords or sensitive commands)
 # Fix keyboard layout on startup
 if [[ "$XDG_SESSION_TYPE" != "wayland" ]]; then
     setxkbmap se 2>/dev/null

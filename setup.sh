@@ -42,6 +42,21 @@ fi
 echo "Installing uv..."
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
+# Install 'Ruff'
+echo "Installing Ruff"
+curl -LsSf https://astral.sh/ruff/install.sh | sh
+
+# Configure Ruff
+echo "Configuring Ruff..."
+if [ -f "ruff.toml" ]; then
+    ln -sf "$(pwd)/ruff.toml" "$HOME/.ruff.toml"
+    echo "Symlinked ruff.toml to ~/.ruff.toml"
+else
+    echo "Warning: ruff.toml not found in the current directory. Skipping."
+fi
+
+
+
 # Install 'ty'
 curl -LsSf https://astral.sh/ty/install.sh | sh
 
@@ -72,6 +87,8 @@ if [ -f "rustscan.toml" ]; then
 else
     echo "Warning: rustscan.toml not found in the current directory. Skipping."
 fi
+
+
 
 # Install rapid web fuzzing tools via Go
 echo "Installing Go-based pentesting tools (ffuf)..."
