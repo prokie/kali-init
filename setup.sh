@@ -46,11 +46,10 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 echo "Installing Ruff"
 curl -LsSf https://astral.sh/ruff/install.sh | sh
 
-# Configure Ruff
 echo "Configuring Ruff..."
 if [ -f "ruff.toml" ]; then
-    ln -sf "$(pwd)/ruff.toml" "$HOME/.ruff.toml"
-    echo "Symlinked ruff.toml to ~/.ruff.toml"
+    ln -sf "$(pwd)/ruff.toml" ~/.config/ruff/ruff.toml
+    echo "Symlinked ruff.toml to ~/.config/ruff/ruff.toml"
 else
     echo "Warning: ruff.toml not found in the current directory. Skipping."
 fi
