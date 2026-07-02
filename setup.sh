@@ -88,6 +88,15 @@ else
 fi
 
 
+echo "Configuring Visual Studio Code..."
+if [ -f "settings.json" ]; then
+    mkdir -p "$HOME/.config/Code/User"
+    ln -sf "$(pwd)/settings.json" "$HOME/.config/Code/User/settings.json"
+    echo "Symlinked settings.json to ~/.config/Code/User/settings.json"
+else
+    echo "Warning: settings.json not found in the current directory. Skipping."
+fi
+
 
 # Install rapid web fuzzing tools via Go
 echo "Installing Go-based pentesting tools (ffuf)..."
@@ -97,6 +106,22 @@ go install github.com/ffuf/ffuf/v2@latest
 echo "Installing Visual Studio Code..."
 wget -qO /tmp/vscode.deb 'https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64'
 sudo apt install -y /tmp/vscode.deb
+
+
+echo "Installing VS Code extensions..."
+extensions=(
+    "rust-lang.rust-analyzer"
+    "charliermarsh.ruff"
+    "tamasfe.even-better-toml"
+    "astral-sh.ty"
+    "myriad-dreamin.tinymist"
+    "ms-python.python"
+)
+
+for ext in "${extensions[@]}"; do
+    echo "Installing $ext..."
+    code --install-extension "$ext" --force
+done
 
 # Set timezone to Stockholm
 echo "Configuring System Timezone..."

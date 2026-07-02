@@ -1,1 +1,5 @@
 line-length = 119
+
+[lint]
+select = ["ALL"]
+ignore = ["D", "T20", "ERA"]

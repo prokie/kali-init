@@ -1,0 +1,17 @@
+{
+    "workbench.colorTheme": "Dark+",
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.minimap.enabled": false,
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "always",
+            "source.fixAll": "always"
+        }
+    },
+    "rust-analyzer.check.command": "clippy"
+}
